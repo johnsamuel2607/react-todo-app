@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import "./style.css";
 import ToDoForm from "./components/todo-form";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -7,9 +7,27 @@ import ToDo from "./components/todo-list";
 import Footer from "./components/footer";
 
 function App() {
-  const [todo, setTodo] = useState([
+
+  const getLocalItems =()=>{
+    let list = localStorage.getItem('list');
+    console.log(list)
+
+    if(list){
+      return JSON.parse(localStorage.getItem('list'))
+    }else {
+      return []
+    }
+  }
   
-  ]);
+  const [todo, setTodo] = useState(
+    getLocalItems()
+  );
+
+  useEffect(() => {
+   localStorage.setItem("list",JSON.stringify(todo))
+  }, [todo]);
+
+
 
   const addTodo = (text) => {
     const newTodos = [...todo, { text, isDone: false }];
